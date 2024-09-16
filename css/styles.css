@@ -1,42 +1,44 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background-color: #f0f0f0;
     height: 100vh;
-    overflow: hidden;
-}
-
-#header, #container, #footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
-    position: relative;
-    transition: transform 0.3s ease, z-index 0.3s ease;
-    z-index: 0; /* Default z-index */
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    overflow: hidden;
+    user-select: none;
 }
 
-#header {
-    background-color: red;
+.draggable {
+    width: 125px;
+    height: 75px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: grab;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    font-size: 16px;
     color: #333;
+    position: absolute;
+    transition: none;
 }
 
-#container {
-    background-color: #61dafb;
-    color: #333;
+#projects {
+    top: 20%;
+    left: 20%;
 }
 
-#footer {
-    background-color: green;
-    color: #333;
+#about-me {
+    top: 50%;
+    left: 40%;
 }
 
-/* Hover effect */
-#header:hover, #container:hover, #footer:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
-    z-index: 10; /* Higher z-index to bring to the front */
+#contact {
+    top: 70%;
+    left: 70%;
 }
-
