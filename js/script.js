@@ -12,16 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
   overlay.classList.add('fullscreen-overlay');
   document.body.appendChild(overlay);
 
-  function showOverlay() {
-    overlay.textContent = "Your Text Here";
-    overlay.classList.add('show');
+  function showOverlay(title) {
+    const overlay = document.getElementById(`overlay-${title}`);
+    if (overlay) {
+      overlay.classList.add('show');
+    }
   }
 
   function hideOverlay() {
-    overlay.classList.remove('show');
+    document.querySelectorAll('.fullscreen-overlay').forEach(overlay => {
+      overlay.classList.remove('show');
+    });
   }
 
-  
+
   const draggables = document.querySelectorAll('.draggable');
 
   draggables.forEach(draggable => {
@@ -77,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
       }
+
+      // Get overlay title from data attribute
+      const overlayTitle = draggable.getAttribute('data-overlay');
 
       // Detect holding the oval without moving
       heldTimeout = setTimeout(() => {
@@ -150,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       function handleHoldCompletion() {
         completeHold();
-        showOverlay();
+        showOverlay(overlayTitle);
       }
 
       function animateIfNotHeld() {

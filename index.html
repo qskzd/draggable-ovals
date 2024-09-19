@@ -10,9 +10,13 @@
 </head>
 
 <body>
-  <div class="draggable" id="projects">Text 1</div>
-  <div class="draggable" id="about-me">Text 2</div>
-  <div class="draggable" id="contact">Text 3</div>
+  <div class="draggable" id="projects" data-overlay="projects">Projects</div>
+  <div class="draggable" id="about-me" data-overlay="about-me">About Me</div>
+  <div class="draggable" id="contact" data-overlay="contact">Contact Me</div>
+
+  <div id="overlay-projects" class="fullscreen-overlay">Projects Content Here</div>
+  <div id="overlay-contact" class="fullscreen-overlay">Contacts Content Here</div>
+  <div id="overlay-about-me" class="fullscreen-overlay">About Content Here</div>
 
   <script src="js/script.js" type="module"></script>
 </body>
