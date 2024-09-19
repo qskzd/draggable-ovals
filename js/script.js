@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const draggables = document.querySelectorAll('.draggable');
-
   // Restore button
   let restoreButton = document.createElement('button');
   restoreButton.classList.add('btn', 'btn-danger', 'position-absolute');
@@ -23,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.remove('show');
   }
 
+  
+  const draggables = document.querySelectorAll('.draggable');
+
   draggables.forEach(draggable => {
     let velocityX = 0;
     let velocityY = 0;
@@ -33,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let shiftY = 0;
     let animationFrameId = null;
     const friction = 0.99;
-    const bounceFactor = -0.8;
-    const maxVelocity = 15;
+    const bounceFactor = -0.5;
+    const maxVelocity = 17;
     const holdThreshold = 700; // hold time
     let heldTimeout = null;
     let isHolding = false;
@@ -86,21 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, holdThreshold);
 
-      function moveAt(pageX, pageY) {
-        let newLeft = pageX - shiftX;
-        let newTop = pageY - shiftY;
-
-        // Constrain within the page boundaries
-        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - draggable.offsetWidth));
-        newTop = Math.max(0, Math.min(newTop, window.innerHeight - draggable.offsetHeight));
-
-        draggable.style.left = newLeft + 'px';
-        draggable.style.top = newTop + 'px';
-      }
-
       function onMove(event) {
         const { x: currentX, y: currentY } = getEventCoordinates(event);
 
+        updateVelocity(currentX, currentY);
+        cancelHoldIfMoved();
+
+        moveDraggable(currentX, currentY);
+      }
+
+      function updateVelocity(currentX, currentY) {
         // Calculate the velocity (change in position)
         velocityX = currentX - lastX;
         velocityY = currentY - lastY;
@@ -111,33 +107,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
         lastX = currentX;
         lastY = currentY;
+      }
 
-        // Cancel hold and border if moved
+      function cancelHoldIfMoved() {
         if (isHolding) {
           cancelBorder();
         }
         clearTimeout(heldTimeout); // Cancel hold detection if moved
-
-        // Move the draggable element
-        moveAt(currentX, currentY);
       }
+
+      function moveDraggable(x, y) {
+        let newLeft = x - shiftX;
+        let newTop = y - shiftY;
+
+        // Constrain within the page boundaries
+        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - draggable.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, window.innerHeight - draggable.offsetHeight));
+
+        draggable.style.left = newLeft + 'px';
+        draggable.style.top = newTop + 'px';
+      }
+
 
       function onStop() {
         isDragging = false;
+        cleanupEventListeners();
+        clearTimeout(heldTimeout);
+
+        if (isHolding) {
+          handleHoldCompletion();
+        } else {
+          animateIfNotHeld();
+        }
+      }
+
+      function cleanupEventListeners() {
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('touchmove', onMove);
         document.removeEventListener('mouseup', onStop);
         document.removeEventListener('touchend', onStop);
+      }
 
-        clearTimeout(heldTimeout);
+      function handleHoldCompletion() {
+        completeHold();
+        showOverlay();
+      }
 
-        // Check if it was a complete hold
-        if (isHolding) {
-          completeHold(); // Complete hold if it's a full hold
-          showOverlay();
-        } else {
-          animateThrow(); // Animate throw if not holding
-        }
+      function animateIfNotHeld() {
+        animateThrow();
       }
 
       lastX = startX;
@@ -210,11 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function restoreOvals() {
       // Restore all ovals and reset their styles
       draggables.forEach(oval => {
-        oval.style.opacity = '1';
-        oval.style.display = 'flex';
-        document.body.appendChild(oval); // Re-append to body
-        // Reset draggable state
-        oval.style.position = 'absolute';
+        requestAnimationFrame(() => {
+          oval.style.opacity = '1';
+          oval.style.display = 'flex'; // Both changes applied together
+        });
       });
 
       // Re-enable dragging
