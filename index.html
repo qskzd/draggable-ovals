@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Website</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -15,8 +16,31 @@
   <div class="draggable" id="contact" data-overlay="contact">Contact Me</div>
 
   <div id="overlay-projects" class="fullscreen-overlay">Projects Content Here</div>
-  <div id="overlay-contact" class="fullscreen-overlay">Contacts Content Here</div>
   <div id="overlay-about-me" class="fullscreen-overlay">About Content Here</div>
+  <div id="overlay-contact" class="fullscreen-overlay">
+    <div class="contact-grid">
+      <div class="rows">
+        <div class="column">
+          <a href="https://github.com/jardhyx" class="contact-item">
+            <img src="/images/GitHub-Symbol.png" alt="School GitHub">
+            <span>School GitHub</span>
+          </a>
+        </div>
+        <div class="column">
+          <a href="https://github.com/qskzd" class="contact-item">
+            <img src="/images/GitHub-Symbol.png" alt="Personal GitHub">
+            <span>Personal GitHub</span>
+          </a>
+        </div>
+        <div class="column">
+          <a href="mailto:jarrodhyx.23@ichat.sp.edu.sg" class="contact-item">
+            <img src="/images/email.png" alt="Email">
+            <span>Email</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="js/script.js" type="module"></script>
 </body>
